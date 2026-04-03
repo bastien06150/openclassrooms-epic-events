@@ -16,3 +16,7 @@ class ClientRepository:
 
     def get_by_id(self, client_id: int):
         return self.session.query(Client).filter_by(id=client_id).first()
+
+    def delete(self, client):
+        self.session.delete(client)
+        self.session.commit()

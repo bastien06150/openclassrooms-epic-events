@@ -39,3 +39,15 @@ class ClientService:
     def list_clients(self, current_user):
         require_authenticated_user(current_user)
         return self.client_repository.get_all()
+
+    def delete_client(self, current_user, client_id: int):
+        require_sales(current_user)
+
+        client = self.client_repository.get_by_id(client_id)
+        if client is None:
+            raise ValueError("Client introuvable")
+
+        if client.sales_contact_id != current_user.id:
+            raise PermissionError("Vous ne pouvez supprimer que vos propres clients. ")
+
+        self.client_repository.delete(client)

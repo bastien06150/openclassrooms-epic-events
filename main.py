@@ -138,6 +138,30 @@ def create_client(full_name, email, phone, company_name):
         session.close()
 
 
+@client.command("delete")
+@click.option("--client-id", prompt="ID du client", type=int)
+def delete_client(client_id):
+    """Supprime un client."""
+    session = SessionLocal()
+    try:
+        auth_service = AuthService(session)
+        client_service = ClientService(session)
+
+        current_user = auth_service.get_current_user()
+
+        client_service.delete_client(
+            current_user=current_user,
+            client_id=client_id,
+        )
+
+        click.echo("Client supprimé avec succès.")
+    except Exception as error:
+        sentry_sdk.capture_exception(error)
+        click.echo(f"Erreur : {error}")
+    finally:
+        session.close()
+
+
 # CONTRACT
 
 
