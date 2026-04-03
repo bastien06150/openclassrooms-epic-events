@@ -65,32 +65,32 @@ Application en ligne de commande (CLI) permettant de gérer des clients, contrat
 ---
 ## Utilisation 
 
-# Authentification
+### Authentification
 
 python main.py login
 python main.py current-user
 python main.py logout
 
-# Clients
+### Clients
 
 python main.py client list
 python main.py client create
 
-# Contrats
+### Contrats
 
 python main.py contract list
 python main.py contract create
 python main.py contract update
 python main.py contract delete
 
-# Evénements
+### Evénements
 
 python main.py event list
 python main.py event create
 python main.py event update
 python main.py event delete
 
-# Collaborateurs
+### Collaborateurs
 
 python main.py employee create
 python main.py employee update
