@@ -75,7 +75,8 @@ Application en ligne de commande (CLI) permettant de gérer des clients, contrat
 
 - python main.py client list
 - python main.py client create
-
+- python main.py client delete
+- 
 ### Contrats
 
 - python main.py contract list
