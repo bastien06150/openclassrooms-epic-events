@@ -55,6 +55,7 @@ def current_user():
             click.echo("Aucun utilisateur connecté.")
             return
 
+        click.echo(f"ID : {employee.id}")
         click.echo(f"Utilisateur : {employee.full_name}")
         click.echo(f"Département : {employee.department.name}")
     finally:
