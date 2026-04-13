@@ -18,6 +18,19 @@ class EmployeeService:
         password: str,
         department_id: int,
     ):
+        """
+        Crée un nouveau collaborateur.
+
+        Args:
+            current_user: utilisateur connecté. Doit appartenir au département management.
+            employee_number: numéro unique du collaborateur.
+            full_name: nom complet du collaborateur.
+            email: adresse email du collaborateur.
+            password: mot de passe brut, qui sera hashé avant stockage.
+            department_id: identifiant du département du collaborateur.
+
+        """
+
         require_management(current_user)
 
         if not employee_number.strip():
@@ -60,6 +73,18 @@ class EmployeeService:
         department_id: int | None = None,
         password: str | None = None,
     ):
+        """
+        Met à jour un collaborateur existant.
+
+        Args:
+            current_user: utilisateur connecté. Doit appartenir au département management.
+            employee_id: identifiant du collaborateur à modifier.
+            full_name: nouveau nom complet, optionnel.
+            email: nouvel email, optionnel.
+            department_id: nouveau département, optionnel.
+            password: nouveau mot de passe brut, optionnel.
+
+        """
         require_management(current_user)
 
         employee = self.employee_repository.get_by_id(employee_id)
@@ -96,6 +121,14 @@ class EmployeeService:
         return updated_employee
 
     def delete_employee(self, current_user, employee_id: int):
+        """
+        Supprime un collaborateur.
+
+        Args:
+            current_user: utilisateur connecté. Doit appartenir au département management.
+            employee_id: identifiant du collaborateur à supprimer.
+
+        """
         require_management(current_user)
 
         employee = self.employee_repository.get_by_id(employee_id)

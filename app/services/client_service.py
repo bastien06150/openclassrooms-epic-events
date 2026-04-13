@@ -16,6 +16,18 @@ class ClientService:
         phone: str,
         company_name: str,
     ):
+        """
+        Crée un nouveau client.
+
+        Args:
+            current_user: utilisateur connecté
+            full_name: nom complet du client
+            email: email du client
+            phone: téléphone du client
+            company_name: nom de l'entreprise
+
+        """
+
         # 1. Vérifier que l'utilisateur connecté est bien sales
         require_sales(current_user)
 
@@ -37,10 +49,25 @@ class ClientService:
         return created_client
 
     def list_clients(self, current_user):
+        """
+        Retourne la liste de tous les clients.
+
+        Args:
+            current_user: utilisateur connecté.
+        """
+
         require_authenticated_user(current_user)
         return self.client_repository.get_all()
 
     def delete_client(self, current_user, client_id: int):
+        """
+        Supprime un client appartenant au commercial connecté.
+
+        Args:
+            current_user: utilisateur connecté. Doit appartenir au département sales.
+            client_id: identifiant du client à supprimer.
+        """
+
         require_sales(current_user)
 
         client = self.client_repository.get_by_id(client_id)

@@ -11,6 +11,13 @@ class EventService:
         self.contract_repository = ContractRepository(session)
 
     def list_events(self, current_user):
+        """
+        Retourne la liste de tous les événements.
+
+        Args:
+            current_user: utilisateur connecté.
+
+        """
         require_authenticated_user(current_user)
         return self.event_repository.get_all()
 
@@ -26,6 +33,21 @@ class EventService:
         notes: str | None = None,
         support_contact_id: int | None = None,
     ):
+        """
+        Crée un nouvel événement.
+
+        Args:
+            current_user: utilisateur connecté. Doit appartenir au département sales.
+            name: nom de l'événement.
+            contract_id: identifiant du contrat lié à l'événement.
+            event_start: date et heure de début.
+            event_end: date et heure de fin.
+            location: lieu de l'événement.
+            attendees: nombre de participants.
+            notes: notes complémentaires, optionnel.
+            support_contact_id: identifiant du collaborateur support assigné, optionnel.
+
+        """
         require_sales(current_user)
 
         if not name.strip():
@@ -71,6 +93,22 @@ class EventService:
         attendees: int | None = None,
         notes: str | None = None,
     ):
+        """
+        Met à jour un événement existant.
+
+        Args:
+            current_user: utilisateur connecté.
+            event_id: identifiant de l'événement à modifier.
+            name: nouveau nom, optionnel.
+            contract_id: nouveau contrat lié, optionnel.
+            support_contact_id: nouvel identifiant support, optionnel.
+            event_start: nouvelle date de début, optionnel.
+            event_end: nouvelle date de fin, optionnel.
+            location: nouveau lieu, optionnel.
+            attendees: nouveau nombre de participants, optionnel.
+            notes: nouvelles notes, optionnel.
+
+        """
         event = self.event_repository.get_by_id(event_id)
         if event is None:
             raise ValueError("Événement introuvable.")
@@ -121,6 +159,14 @@ class EventService:
         return self.event_repository.update(event)
 
     def delete_event(self, current_user, event_id: int):
+        """
+        Supprime un événement.
+
+        Args:
+            current_user: utilisateur connecté.
+            event_id: identifiant de l'événement à supprimer.
+
+        """
         event = self.event_repository.get_by_id(event_id)
         if event is None:
             raise ValueError("Événement introuvable.")

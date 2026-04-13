@@ -2,6 +2,7 @@ import sentry_sdk
 from app.repositories.contract_repository import ContractRepository
 from app.permissions import require_management, require_authenticated_user
 from app.models import Contract
+from app.permissions import require_authenticated_user
 
 
 class ContractService:
@@ -9,8 +10,13 @@ class ContractService:
         self.contract_repository = ContractRepository(session)
 
     def list_contracts(self, current_user):
-        from app.permissions import require_authenticated_user
+        """
+        Retourne la liste de tous les contrats.
 
+        Args:
+            current_user: utilisateur connecté.
+
+        """
         require_authenticated_user(current_user)
         return self.contract_repository.get_all()
 
@@ -22,6 +28,18 @@ class ContractService:
         amount_due,
         is_signed: bool,
     ):
+        """
+        Crée un nouveau contrat.
+
+        Args:
+            current_user: utilisateur connecté. Doit appartenir au département management.
+            client_id: identifiant du client lié au contrat.
+            total_amount: montant total du contrat.
+            amount_due: montant restant dû.
+            is_signed: statut de signature du contrat.
+
+        """
+
         require_management(current_user)
 
         if total_amount is None or float(total_amount) < 0:
@@ -51,6 +69,18 @@ class ContractService:
         amount_due=None,
         is_signed: bool | None = None,
     ):
+        """
+        Met à jour un contrat existant.
+
+        Args:
+            current_user: utilisateur connecté. Doit appartenir au département management.
+            contract_id: identifiant du contrat à modifier.
+            client_id: nouvel identifiant client, optionnel.
+            total_amount: nouveau montant total, optionnel.
+            amount_due: nouveau montant restant dû, optionnel.
+            is_signed: nouveau statut signé, optionnel.
+
+        """
         require_management(current_user)
 
         contract = self.contract_repository.get_by_id(contract_id)
@@ -90,6 +120,14 @@ class ContractService:
         return updated_contract
 
     def delete_contract(self, current_user, contract_id: int):
+        """
+        Supprime un contrat.
+
+        Args:
+            current_user: utilisateur connecté. Doit appartenir au département management.
+            contract_id: identifiant du contrat à supprimer.
+
+        """
         require_management(current_user)
 
         contract = self.contract_repository.get_by_id(contract_id)
